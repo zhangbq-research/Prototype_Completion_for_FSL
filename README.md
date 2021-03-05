@@ -28,6 +28,3 @@ If you use this code for your research, please cite our paper:
 ## Code (coming soon)
 
 
-## Acknowledgments
-
-This code is based on the implementations of [**MetaOptNet**](https://github.com/kjunelee/MetaOptNet),  [**Meta-Learning with Differentiable Convex Optimization**]
