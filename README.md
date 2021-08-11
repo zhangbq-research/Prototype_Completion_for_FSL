@@ -50,7 +50,7 @@ If you use this code for your research, please cite our paper:
 ### Pre-training
 1. To pre-train a feature extractor on miniImageNet and obtain a good representation for each image:
     ```bash
-    python train.py --phase pretrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase pretrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --head CosineNet --network ResNet --pre_head LinearNet --dataset miniImageNet
     ```
    
