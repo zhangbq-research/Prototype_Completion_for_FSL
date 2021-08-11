@@ -138,7 +138,6 @@ def FuseCosineNetHead(k_all, meta_part_infer, query, support, support_labels, n_
     )
     diff = torch.pow(emb.unsqueeze(1).expand(-1, n_way, -1, -1) - mean_1.unsqueeze(2).expand(-1, -1, emb.shape[1], -1), 2)
     std_1 = (assign_1_transposed.unsqueeze(-1).expand_as(diff) * diff).sum(dim=2) / assign_1_transposed.unsqueeze(-1).expand_as(diff).sum(dim=2)
-    prototypes = mean_1
 
     logits = torch.nn.functional.cosine_similarity(query.unsqueeze(2).expand(-1, -1, boost_prototypes.shape[1], -1),
                                                    boost_prototypes.unsqueeze(1).expand(-1, query.shape[1], -1, -1), dim=-1)
@@ -152,7 +151,6 @@ def FuseCosineNetHead(k_all, meta_part_infer, query, support, support_labels, n_
     )
     diff = torch.pow(emb.unsqueeze(1).expand(-1, n_way, -1, -1) - mean_2.unsqueeze(2).expand(-1, -1, emb.shape[1], -1), 2)
     std_2 = (assign_2_transposed.unsqueeze(-1).expand_as(diff) * diff).sum(dim=2) / assign_2_transposed.unsqueeze(-1).expand_as(diff).sum(dim=2)
-    boost_prototypes = mean_2
 
     prototypes = (mean_1 * std_2 + mean_2 * std_1) / (std_2 + std_1)
     logits = torch.nn.functional.cosine_similarity(query.unsqueeze(2).expand(-1, -1, prototypes.shape[1], -1),
