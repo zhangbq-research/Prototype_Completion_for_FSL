@@ -63,43 +63,43 @@ If you use this code for your research, please cite our paper:
 
 ### Extract prior information from primitive knowledge
 ```bash
-    python train.py --phase savepart --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase savepart --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --network ResNet --dataset miniImageNet
 ```
 
 ### Learn to complete prototype
 1. To train ProtoComNet on 5-way 1-shot miniImageNet benchmark:
 ```bash
-    python train.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
 ```
 2. To train ProtoComNet on 5-way 5-shot miniImageNet benchmark:
 ```bash
-    python train.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
 ```
 
 ### Meta-training
 1. To jointly fine-tune feature extractor and ProtoComNet on 5-way 1-shot miniImageNet benchmark:
     ```bash
-    python train.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
     ```
 2. To jointly fine-tune feature extractor and ProtoComNet on 5-way 5-shot miniImageNet benchmark:
     ```bash
-    python train.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
     ```    
 
 ### Meta-testing
 1. To evaluate performance on 5-way 1-shot miniImageNet benchmark:
     ```bash
-    python train.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
     ```
 2. To evaluate performance on 5-way 1-shot miniImageNet benchmark:
     ```bash
-    python train.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    python main.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
     --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
     ```
 
