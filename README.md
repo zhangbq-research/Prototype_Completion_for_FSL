@@ -1,7 +1,7 @@
 # Prototype Completion with Primitive Knowledge for Few-Shot Learning
 This repository contains the code for the paper:
 <br>
-[**Prototype Completion with Primitive Knowledge for Few-Shot Learning**]()
+[**Prototype Completion with Primitive Knowledge for Few-Shot Learning**](https://openaccess.thecvf.com/content/CVPR2021/papers/Zhang_Prototype_Completion_With_Primitive_Knowledge_for_Few-Shot_Learning_CVPR_2021_paper.pdf)
 <br>
 Baoquan Zhang, Xutao Li, Yunming Ye, Zhichao Huang, Lisai Zhang
 <br>
@@ -19,13 +19,90 @@ Few-shot learning is a challenging task, which aims to learn a classifier for no
 If you use this code for your research, please cite our paper:
 ```
 @inproceedings{zhang2021prototype,
-  title={Prototype Completion with Primitive Knowledge for Few-Shot Learning},
-  author={Baoquan Zhang and Xutao Li and Yunming Ye and Zhichao Huang and Lisai Zhang},
-  booktitle={CVPR},
-  year={2021}
+	author    = {Zhang, Baoquan and Li, Xutao and Ye, Yunming and Huang, Zhichao and Zhang, Lisai},
+	title     = {Prototype Completion With Primitive Knowledge for Few-Shot Learning},
+	booktitle = {CVPR},
+	year      = {2021},
+	pages     = {3754-3762}
 }
 ```
 
-## Code (coming soon)
+## Dependencies
+* Python 3.6
+* [PyTorch 1.1.0](http://pytorch.org)
 
+## Usage
 
+### Installation
+
+1. Clone this repository:
+    ```bash
+    git clone https://github.com/zhangbq-research/Prototype_Completion_for_FSL.git
+    cd Prototype_Completion_for_FSL
+    ```
+2. Download and decompress dataset files: [**miniImageNet**](https://mega.nz/#!rx0wGQyS!96sFlAr6yyv-9QQPCm5OBFbOm4XSD0t-HlmGaT5GaiE) (courtesy of [**Spyros Gidaris**](https://github.com/gidariss/FewShotWithoutForgetting))
+
+3. For the dataset loader, specify the path to the directory. For example, in Prototype_Completion_for_FSL/data/mini_imagenet.py line 30:
+    ```python
+    _MINI_IMAGENET_DATASET_DIR = 'path/to/miniImageNet'
+    ```
+
+### Pre-training
+1. To pre-train a feature extractor on miniImageNet and obtain a good representation for each image:
+    ```bash
+    python train.py --phase pretrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --head CosineNet --network ResNet --pre_head LinearNet --dataset miniImageNet
+    ```
+   
+2. You can experiment with varying classification head by changing '--pre_head' argument to LinearRotateNet.
+
+### Construct primitive knowledge for all classes
+```bash
+    python ./prior/make_miniimagenet_primitive_knowledge.py
+```
+
+### Extract prior information from primitive knowledge
+```bash
+    python train.py --phase savepart --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --network ResNet --dataset miniImageNet
+```
+
+### Learn to complete prototype
+1. To train ProtoComNet on 5-way 1-shot miniImageNet benchmark:
+```bash
+    python train.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
+```
+2. To train ProtoComNet on 5-way 5-shot miniImageNet benchmark:
+```bash
+    python train.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
+```
+
+### Meta-training
+1. To jointly fine-tune feature extractor and ProtoComNet on 5-way 1-shot miniImageNet benchmark:
+    ```bash
+    python train.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
+    ```
+2. To jointly fine-tune feature extractor and ProtoComNet on 5-way 5-shot miniImageNet benchmark:
+    ```bash
+    python train.py --phase metatrain --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
+    ```    
+
+### Meta-testing
+1. To evaluate performance on 5-way 1-shot miniImageNet benchmark:
+    ```bash
+    python train.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
+    ```
+2. To evaluate performance on 5-way 1-shot miniImageNet benchmark:
+    ```bash
+    python train.py --phase metatest --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
+    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
+    ```
+
+## Acknowledgments
+
+This code is based on the implementations of [**MetaOptNet**](https://github.com/kjunelee/MetaOptNet.git)
