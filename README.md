@@ -71,12 +71,12 @@ If you use this code for your research, please cite our paper:
 1. To train ProtoComNet on 5-way 1-shot miniImageNet benchmark:
 ```bash
     python main.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
-    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
+    --train-shot 1 --val-shot 1 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
 ```
 2. To train ProtoComNet on 5-way 5-shot miniImageNet benchmark:
 ```bash
     python main.py --phase metainfer --gpu 0,1,2,3 --save-path "./experiments/meta_part_resnet12_mini" \
-    --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head CosineNet --network ResNet --dataset miniImageNet
+    --train-shot 5 --val-shot 5 --train-query 15 --val-query 15 --head FuseCosNet --network ResNet --dataset miniImageNet
 ```
 
 ### Meta-training
