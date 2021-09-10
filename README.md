@@ -57,6 +57,7 @@ If you use this code for your research, please cite our paper:
 2. You can experiment with varying classification head by changing '--pre_head' argument to LinearRotateNet.
 
 ### Construct primitive knowledge for all classes
+Download the file of [**glove_840b_300d**](https://nlp.stanford.edu/data/glove.840B.300d.zip) and then perform
 ```bash
     python ./prior/make_miniimagenet_primitive_knowledge.py
 ```
